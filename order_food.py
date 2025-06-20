@@ -6,20 +6,24 @@ from selenium.webdriver.chrome.options import Options
 import time
 import os
 
+# --- Get Credentials from Environment Variables ---
+# These are set by GitHub Secrets in your repository settings
 USERNAME = os.environ.get("KHANA_USERNAME")
 PASSWORD = os.environ.get("KHANA_PASSWORD")
 
 if not USERNAME or not PASSWORD:
-    raise ValueError("KHANA_USERNAME and KHANA_PASSWORD environment variables not set.")
+    raise ValueError("KHANA_USERNAME and KHANA_PASSWORD environment variables not set in GitHub Secrets.")
 
+# --- Chrome Options for Headless Mode in GitHub Actions ---
 options = Options()
-options.add_argument('--headless')  # Run in headless mode
+options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--disable-gpu')
 options.add_argument('--window-size=1920,1080')
 
-# Set up the Chrome driver (ensure chromedriver is in your PATH)
+# --- Initialize WebDriver ---
+# This uses the headless options defined above
 driver = webdriver.Chrome(options=options)
 
 try:
@@ -30,10 +34,10 @@ try:
         username_input = wait.until(EC.presence_of_element_located((By.NAME, "userId")))
         password_input = driver.find_element(By.NAME, "password")
     except Exception as e:
-        print("Could not find username/password fields. Printing page source for debugging:")
+        print("Could not find username/password fields.")
+        # Saving page source for debugging is less useful in CI, but can be kept
         with open("page_source.html", "w", encoding="utf-8") as f:
             f.write(driver.page_source)
-        print("Page source saved to page_source.html. Please inspect this file to find the correct field names or structure.")
         raise e
 
     username_input.send_keys(USERNAME)
@@ -41,6 +45,7 @@ try:
 
     login_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Login')]")
     login_button.click()
+    print("Login successful.")
 
     # Wait for dashboard to load
     time.sleep(5)
@@ -55,8 +60,8 @@ try:
         lunch_nonveg_btn.click()
         print("Clicked 'Non Veg' for Lunch.")
         time.sleep(1)
-    except Exception as e:
-        print("Could not click 'Non Veg' for Lunch (maybe already ordered or disabled):", e)
+    except Exception:
+        print("Could not order 'Non Veg' for Lunch (likely disabled or already ordered).")
 
     # 2. Click 'Non Veg' for Dinner (if enabled)
     try:
@@ -67,8 +72,8 @@ try:
         dinner_nonveg_btn.click()
         print("Clicked 'Non Veg' for Dinner.")
         time.sleep(1)
-    except Exception as e:
-        print("Could not click 'Non Veg' for Dinner (maybe already ordered or disabled):", e)
+    except Exception:
+        print("Could not order 'Non Veg' for Dinner (likely disabled or already ordered).")
 
     # 3. Click '+ Add' for Snacks
     try:
@@ -79,8 +84,8 @@ try:
         snacks_add_btn.click()
         print("Clicked '+ Add' for Snacks.")
         time.sleep(1)
-    except Exception as e:
-        print("Could not click '+ Add' for Snacks (maybe already added):", e)
+    except Exception:
+        print("Could not add Snacks (maybe already added).")
 
     # 4. Click 'Confirm Order' button
     try:
@@ -90,10 +95,10 @@ try:
         )))
         confirm_btn.click()
         print("Clicked 'Confirm Order' button.")
-    except Exception as e:
-        print("Could not click 'Confirm Order' button:", e)
+    except Exception:
+        print("Could not click 'Confirm Order' button.")
 
-    print("Order actions attempted. Please verify on the site.")
+    print("Order actions script finished.")
 
 finally:
     time.sleep(5)
