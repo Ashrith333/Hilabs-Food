@@ -4,9 +4,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
+import os
 
-USERNAME = "0467"  # Replace with your username
-PASSWORD = "1908199"  # Replace with your password
+USERNAME = os.environ.get("KHANA_USERNAME")
+PASSWORD = os.environ.get("KHANA_PASSWORD")
+
+if not USERNAME or not PASSWORD:
+    raise ValueError("KHANA_USERNAME and KHANA_PASSWORD environment variables not set.")
 
 options = Options()
 options.add_argument('--headless')  # Run in headless mode
