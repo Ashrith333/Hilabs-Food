@@ -1,0 +1,37 @@
+    name: Run Food Order Script
+
+    on:
+      schedule:
+        # Runs at 1:00 AM UTC every day. Adjust the time as needed.
+        # Cron syntax: Minute Hour Day Month DayOfWeek
+        - cron: '0 1 * * *'
+      workflow_dispatch: # Allows you to run it manually from the Actions tab
+
+    jobs:
+      order-food:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Check out repository
+          uses: actions/checkout@v3
+
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.10'
+
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+
+        - name: Setup Chrome
+          uses: browser-actions/setup-chrome@v1
+
+        - name: Run the food ordering script
+          run: python order_food.py
+          env:
+            # IMPORTANT: Add your username and password as secrets in your GitHub repo
+            # Go to Repo > Settings > Secrets and variables > Actions > New repository secret
+            PY_USERNAME: ${{ secrets.KHANA_USERNAME }}
+            PY_PASSWORD: ${{ secrets.KHANA_PASSWORD }}
