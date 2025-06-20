@@ -2,13 +2,21 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import time
 
 USERNAME = "0467"  # Replace with your username
 PASSWORD = "1908199"  # Replace with your password
 
+options = Options()
+options.add_argument('--headless')  # Run in headless mode
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+options.add_argument('--disable-gpu')
+options.add_argument('--window-size=1920,1080')
+
 # Set up the Chrome driver (ensure chromedriver is in your PATH)
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=options)
 
 try:
     driver.get("https://khanakhazana.hilabs.com/")
