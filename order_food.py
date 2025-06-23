@@ -63,29 +63,29 @@ try:
     except Exception:
         print("Could not order 'Non Veg' for Lunch (likely disabled or already ordered).")
 
-    # 2. Click 'Non Veg' for Dinner (if enabled)
-    try:
-        dinner_nonveg_btn = wait.until(EC.element_to_be_clickable((
-            By.XPATH,
-            "//p[contains(translate(text(), 'DINNER', 'dinner'), 'dinner')]/following::span[contains(text(), 'Non Veg')][1]/parent::div[not(contains(@class, 'Mui-disabled'))]"
-        )))
-        dinner_nonveg_btn.click()
-        print("Clicked 'Non Veg' for Dinner.")
-        time.sleep(1)
-    except Exception:
-        print("Could not order 'Non Veg' for Dinner (likely disabled or already ordered).")
+    # # 2. Click 'Non Veg' for Dinner (if enabled)
+    # try:
+    #     dinner_nonveg_btn = wait.until(EC.element_to_be_clickable((
+    #         By.XPATH,
+    #         "//p[contains(translate(text(), 'DINNER', 'dinner'), 'dinner')]/following::span[contains(text(), 'Non Veg')][1]/parent::div[not(contains(@class, 'Mui-disabled'))]"
+    #     )))
+    #     dinner_nonveg_btn.click()
+    #     print("Clicked 'Non Veg' for Dinner.")
+    #     time.sleep(1)
+    # except Exception:
+    #     print("Could not order 'Non Veg' for Dinner (likely disabled or already ordered).")
 
-    # 3. Click '+ Add' for Snacks
-    try:
-        snacks_add_btn = wait.until(EC.element_to_be_clickable((
-            By.XPATH,
-            "//p[translate(normalize-space(text()), 'SNACKS', 'snacks')='snacks']/following::span[text()='+ Add'][1]/parent::div[@tabindex='0']"
-        )))
-        snacks_add_btn.click()
-        print("Clicked '+ Add' for Snacks.")
-        time.sleep(1)
-    except Exception:
-        print("Could not add Snacks (maybe already added).")
+    # # 3. Click '+ Add' for Snacks
+    # try:
+    #     snacks_add_btn = wait.until(EC.element_to_be_clickable((
+    #         By.XPATH,
+    #         "//p[translate(normalize-space(text()), 'SNACKS', 'snacks')='snacks']/following::span[text()='+ Add'][1]/parent::div[@tabindex='0']"
+    #     )))
+    #     snacks_add_btn.click()
+    #     print("Clicked '+ Add' for Snacks.")
+    #     time.sleep(1)
+    # except Exception:
+    #     print("Could not add Snacks (maybe already added).")
 
     # 4. Click 'Confirm Order' button
     try:
